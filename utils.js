@@ -83,6 +83,14 @@ function updateMeme({imgurID, url, score}) {
                     contentType: ext,
                   })
                 )
+                .catch(
+                  error => Image.saveImage({
+                    imgurID,
+                    size: index,
+                    image: new Buffer(body, 'binary'),
+                    contentType: ext,
+                  })
+                )
             );
           // TODO: asuming if the last one is ok the rest are ok too
           return promises[2];
