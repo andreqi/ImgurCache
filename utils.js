@@ -57,6 +57,7 @@ function resizeImage(img, ext, opts) {
 }
 
 function updateMeme({imgurID, url, score}) {
+  console.log(imgurID, url, score);
   return Meme.update(imgurID, score)
     .then(meme => Image.exists({imgurID}))
     .then(data => {
@@ -83,7 +84,7 @@ function updateMeme({imgurID, url, score}) {
                 )
                 .catch(
                   error => {
-                    console.log('saved big image: ', imgurID, ', ', size);
+                    console.log('saved big image: ', imgurID, ', ', index);
                     return Image.saveImage({
                       imgurID,
                       size: index,
