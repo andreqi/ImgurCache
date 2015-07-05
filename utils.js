@@ -48,9 +48,7 @@ function resizeImage(img, ext, opts) {
     format: `${ext}`,
     coalesce: true,
     customArgs: [
-      '-limit', 'area', '0',
-      '-limit', 'thread', '0',
-      '-limit', 'time', '0',
+      '-limit', 'memory', '150MiB',
     ],
   };
   Object.keys(opts).forEach(key => {
@@ -87,7 +85,7 @@ function updateMeme({imgurID, url, score}) {
           var ext = response
             .headers['content-type']
             .substr('image/'.length);
-          var promises = [32, 64, 128]
+          var promises = [50, 90, 180]
             .map((width, index) =>
               resizeImage(body, ext, {width})
                 .then(
