@@ -84,12 +84,15 @@ function updateMeme({imgurID, url, score}) {
                   })
                 )
                 .catch(
-                  error => Image.saveImage({
-                    imgurID,
-                    size: index,
-                    image: new Buffer(body, 'binary'),
-                    contentType: ext,
-                  })
+                  error => {
+                    console.log('saved big image: ', imgurID, ', ', size);
+                    return Image.saveImage({
+                      imgurID,
+                      size: index,
+                      image: new Buffer(body, 'binary'),
+                      contentType: ext,
+                    });
+                  }
                 )
             );
           // TODO: asuming if the last one is ok the rest are ok too

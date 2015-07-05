@@ -32,12 +32,10 @@ request.get({
   data.forEach(d => {
     promise = promise
       .then(() => sleep(1).then(() => {
-        console.log(d);
         return updateMeme(d);
       }))
       .catch(() => sleep(1).then(() => {
-        console.log('we lost');
-        console.log(d);
+        console.log('we lost ', d);
         return updateMeme(d);
       }));
   });
