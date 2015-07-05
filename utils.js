@@ -37,7 +37,8 @@ function resizeImage(img, ext, opts) {
     format: `${ext}`,
     coalesce: true,
     customArgs: [
-      '-limit', 'memory', '32MiB',
+      '-limit', 'memory', '32',
+      '-limit', 'map', '128',
     ],
   };
   Object.keys(opts).forEach(key => {
