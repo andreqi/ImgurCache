@@ -10,15 +10,12 @@ var MemeSchema = new Schema({
 
 MemeSchema.statics.update = function (imgurID, score) {
   var deferred = q.defer();
-  console.log(imgurID);
-  console.log(this.findOne);
   this.findOne({imgurID}, (error, data) => {
     if (error || !data) {
       var meme =  new Meme();
       meme.imgurID = imgurID;
       data = meme;
     }
-    console.log(error, data);
     data.score = score;
     data.save((err, data) => {
       if (err) {
@@ -42,9 +39,7 @@ var ImageSchema = new Schema({
 
 ImageSchema.statics.exists = function (query) {
   var deferred = q.defer();
-  console.log(this.find);
   this.find(query, (error, data) => {
-    console.log(data);
     deferred.resolve(data);
   })
   return deferred.promise;
@@ -56,7 +51,6 @@ ImageSchema.statics.saveImage = function (data) {
   Object.keys(data).forEach(key => {
     img[key] = data[key];
   });
-  console.log(data);
   img.save((error, image) => {
     if (error) {
       deferred.reject(error);

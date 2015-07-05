@@ -1,15 +1,3 @@
-(function() {
-    var childProcess = require("child_process");
-    var oldSpawn = childProcess.spawn;
-    function mySpawn() {
-        console.log('spawn called');
-        console.log(arguments);
-        var result = oldSpawn.apply(this, arguments);
-        return result;
-    }
-    childProcess.spawn = mySpawn;
-})();
-
 var request = require('request');
 var fs = require('fs');
 var im = require('./magic');
@@ -27,7 +15,8 @@ function readImage(url) {
   };
   var deferred = q.defer()
   request.get(options, (error, response, body) => {
-    if (error) {
+    if (error && response.statusCode !== 200) {
+      console.log(url, response.statusCode, body);
       deferred.reject(new Error(error));
     } else {
       deferred.resolve({response, body});
@@ -73,9 +62,7 @@ function updateMeme({imgurID, url, score}) {
   return Meme.update(imgurID, score)
     .then(meme => Image.exists({imgurID}))
     .then(data => {
-      console.log('asdfasdf');
       var deferred = q.defer();
-      console.log(data);
       if (data.length) {
         deferred.resolve(true);
         return deferred.promise;
