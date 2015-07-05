@@ -6,6 +6,12 @@ var q = require('q');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
 
+var sleep = function (secs) {
+  var deferred = q.defer();
+  setTimeout(() => deferred.resolve(true), secs * 1000);
+  return deferred.promise;
+}
+
 request.get({
   url: "https://api.imgur.com/3/gallery/hot/viral/0.json",
   headers: {
@@ -21,21 +27,21 @@ request.get({
         url: e.link,
       };
     });
-  console.log(data);
   var deferred = q.defer();
   var promise = deferred.promise;
   data.forEach(d => {
     promise = promise
-      .then(() => {
+      .then(() => sleep(1).then(() => {
         console.log(d);
-        console.log('gg');
-        updateMeme(d)
-      })
-      .catch(() => {
-         console.log('ff');
-         updateMeme(d);
-      });
+        return updateMeme(d);
+      }))
+      .catch(() => sleep(1).then(() => {
+        console.log('we lost');
+        console.log(d);
+        return updateMeme(d);
+      }));
   });
-  console.log(promise);
+  promise.done();
   deferred.resolve(true);
+  deferred.promise.catch(e => console.log(e, e.stack))
 });
