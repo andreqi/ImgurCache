@@ -53,6 +53,7 @@ ImageSchema.statics.saveImage = function (data) {
   });
   img.save((error, image) => {
     if (error) {
+      console.log(error);
       deferred.reject(error);
     } else {
       deferred.resolve(image);
