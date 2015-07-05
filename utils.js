@@ -48,9 +48,8 @@ function resizeImage(img, ext, opts) {
     (err, stdout, stderr) => {
     if (err) {
       console.log('we lost boys', err, stderr);
-      deferred.resolve(stdout);
+      deferred.reject(err);
     } else {
-      console.log('resized kittens.jpg to fit within 256x256px');
       deferred.resolve(stdout);
     }
   });
