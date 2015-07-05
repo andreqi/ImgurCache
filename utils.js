@@ -71,31 +71,30 @@ function updateMeme({imgurID, url, score}) {
           var ext = response
             .headers['content-type']
             .substr('image/'.length);
-          var promises = [50, 90, 180]
-            .map((width, index) =>
-              resizeImage(body, ext, {width})
-                .then(
-                  image => Image.saveImage({
+          var createForWith = (width, index) =>
+            resizeImage(body, ext, {width})
+              .then(
+                image => Image.saveImage({
+                  imgurID,
+                  size: index,
+                  image: new Buffer(image, 'binary'),
+                  contentType: ext,
+                })
+              )
+              .catch(
+                error => {
+                  console.log('saved big image: ', imgurID, ', ', index);
+                  return Image.saveImage({
                     imgurID,
                     size: index,
-                    image: new Buffer(image, 'binary'),
+                    image: new Buffer(body, 'binary'),
                     contentType: ext,
-                  })
-                )
-                .catch(
-                  error => {
-                    console.log('saved big image: ', imgurID, ', ', index);
-                    return Image.saveImage({
-                      imgurID,
-                      size: index,
-                      image: new Buffer(body, 'binary'),
-                      contentType: ext,
-                    });
-                  }
-                )
-            );
-          // TODO: asuming if the last one is ok the rest are ok too
-          return promises[2];
+                  });
+                }
+              );
+          return createForWith(50, 0)
+            .then(() => createForWith(80, 1))
+            .then(() => createForWith(170, 2));
         })
         .then(image => deferred.resolve(true))
         .catch(error => deferred.reject(error));
