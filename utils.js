@@ -16,7 +16,7 @@ function readImage(url) {
   var deferred = q.defer()
   request.get(options, (error, response, body) => {
     if (error && response.statusCode !== 200) {
-      console.log(url, response.statusCode, body);
+      console.log('we failed ', url, response.statusCode, body);
       deferred.reject(new Error(error));
     } else {
       deferred.resolve({response, body});
