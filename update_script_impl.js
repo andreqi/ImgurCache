@@ -34,12 +34,12 @@ request.get({
       .then(() => sleep(1).then(() => {
         return updateMeme(d);
       }))
-      .catch(() => sleep(1).then(() => {
-        console.log('we lost ', d);
+      .catch((e) => sleep(1).then(() => {
+        console.log('we lost ', d, e);
         return updateMeme(d);
       }));
   });
-  promise.done();
+  promise.catch(e => console.log(e)).done();
   deferred.resolve(true);
   deferred.promise.catch(e => console.log(e, e.stack))
 });
