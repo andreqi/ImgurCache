@@ -257,13 +257,6 @@ exports.convert = function(args, timeout, callback) {
 exports.convert.path = 'convert';
 
 var resizeCall = function(t, callback) {
-  var x = {};
-  console.log('ff');
-  Object.keys(t.opt).forEach(function(key) {
-    x[key] = t.opt[key];
-  })
-  x.srcData = null;
-  console.log(x);
   var proc = exports.convert(t.args, t.opt.timeout, callback);
   if (t.opt.srcPath.match(/-$/)) {
     if ('string' === typeof t.opt.srcData) {
