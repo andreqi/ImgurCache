@@ -29,6 +29,8 @@ app.get('/:id/:sz', (req, res) => {
 
 app.get('/', (req, res) => {
   res.contentType('application/json');
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   Meme.find({}).sort({score: 1}).limit(128).exec(
     (err, data) => res.send(
       JSON.stringify(data.map(d => {
