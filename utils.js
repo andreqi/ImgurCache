@@ -36,10 +36,6 @@ function resizeImage(img, ext, opts) {
     srcData: img,
     format: `${ext}`,
     coalesce: true,
-    customArgs: [
-      '-limit', 'memory', '32',
-      '-limit', 'map', '128',
-    ],
   };
   Object.keys(opts).forEach(key => {
     baseProps[key] = opts[key];
@@ -93,9 +89,9 @@ function updateMeme({imgurID, url, score}) {
                   });
                 }
               );
-          return createForWith(50, 0)
-            .then(() => createForWith(80, 1))
-            .then(() => createForWith(170, 2));
+          return createForWith(30, 0)
+            .then(() => createForWith(60, 1))
+            .then(() => createForWith(120, 2));
         })
         .then(image => deferred.resolve(true))
         .catch(error => deferred.reject(error));

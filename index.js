@@ -9,7 +9,7 @@ var {Image, Meme} = require('./data');
 var {updateMeme, readImage, resizeImage} = require('./utils');
 var app = express();
 
-app.get('/:id/:sz', function (req, res) {
+app.get('/:id/:sz', (req, res) => {
   var size = parseInt(req.params.sz, 10);
   var id = req.params.id;
   Image.findOne(
@@ -26,6 +26,20 @@ app.get('/:id/:sz', function (req, res) {
     }
   );
 });
+
+app.get('/', (req, res) => {
+  res.contentType('application/json');
+  Meme.find({}).sort({score: 1}).limit(128).exec(
+    (err, data) => res.send(
+      JSON.stringify(data.map(d => {
+        return {
+          imgurID: d.imgurID,
+          score: d.score,
+        };
+      })
+    ))
+  );
+})
 
 var server = app.listen(3000, function () {
   var host = server.address().address;
